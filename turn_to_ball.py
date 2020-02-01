@@ -3,32 +3,49 @@ import sys
 import time
 
 from networktables import NetworkTables
-
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-NetworkTables.initialize(server="10.17.21.2")
-table = NetworkTables.getTable("ML")
+rosserver = NetworkTables
+rosserver.initialize(server="10.17.21.2")
 NetworkTables.setServer([("10.17.21.2", 5800), ])
 
+mlserver = NetworkTables
+mlserver.initialize(server="10.17.21.2")
+
+mltable = mlserver.getTable("ML")
+rostable = rosserver.getTable("ROS")
+
+
+
 #values for tweaking
-turnSpeed = 0.2
+turnSpeed = 0.5
 #math & code
 while 1:
-    b1cX.getNumber('ball1centerX', 0)
-    b2cX.getNumber('ball2centerX', 0)
+    b1cx = mltable.getNumber('ball1centerX', 0)
 
     leftSpeed = 0
     rightSpeed = 0
-    if (ball1centerX >=25 and ball1centerX <= 35):
-        pass
-    elif(ball1centerX < 25):
+    if (b1cx >=25 and b1cx <= 35):
+        leftSpeed = 0
+        rightSpeed = 0
+    elif(b1cx < 25 and b1cx != 0):
         leftSpeed = turnSpeed
-    elif(ball1centerX > 35):
+    elif(b1cx > 35):
         rightSpeed = turnSpeed
-    
+    else:
+        leftSpeed = 0
+        rightSpeed = 0
+  
         
+
+    rostable.putNumber("coprocessorPort", 1)
+    rostable.putNumber("coprocessorStarboard", 1)
     
-    ros.putNumber("coprocessorPort", leftSpeed)
-    ros.putNumber("coprocessorStarboard", rightSpeed)
+    test = rostable.getNumber("coprocessorPort", 45)
+    
+    print(rightSpeed)
+    print(leftSpeed)
+    print(test)
+
 
