@@ -86,7 +86,7 @@ while 1:
     elif (numBall <= 1):
         if (i <= smoothLevel - 1):
             print("The center of ball 1 is at " + str(ball1memX))
-        if (p <= smoothLevel - 1):
+        if (p <= smoothLevel - 1):              
             print("The center of ball 2 is at " + str(ball2memX))
         if (p >= smoothLevel or i >= smoothLevel):
             notEnoughBallage = True
@@ -95,21 +95,21 @@ while 1:
     #print(ball1memX)
     p = p + 1
     i = i + 1
-    try:
-        ros.putNumber("ball1centerX", ball1memX)
-        ros.putNumber("ball2centerX", ball2memX)
-        leftSpeed = 0
-        rightSpeed = 0
-        if (ball1centerX >=25 and ball1centerX <= 35):
-            pass
-        elif(ball1centerX < 25):
+    
+    ros.putNumber("ball1centerX", ball1memX)
+    ros.putNumber("ball2centerX", ball2memX)
+    leftSpeed = 0
+    rightSpeed = 0
+    if (ball1centerX >=25 and ball1centerX <= 35):
+        pass
+    elif(ball1centerX < 25):
         leftSpeed = 0.2
-        elif(ball1centerX > 35):
-            rightSpeed = 0.2
-    except:
-        pass
-    try:
-        ros.putNumber("coprocessorPort", leftSpeed)
-        ros.putNumber("coprocessorStarboard", rightSpeed)
-    except:
-        pass
+    elif(ball1centerX > 35):
+        rightSpeed = 0.2
+    
+        
+    
+    ros.putNumber("coprocessorPort", leftSpeed)
+    ros.putNumber("coprocessorStarboard", rightSpeed)
+    
+    
