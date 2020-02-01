@@ -5,14 +5,13 @@ from networktables import NetworkTables
 
 import logging	# Required
 logging.basicConfig(level=logging.DEBUG)
-
-NetworkTables.setServer([("10.17.21.2", 5800), ])
  #variables to tweak
 smoothLevel = 10000 #how long to store a balls locaion?
 memRange = 10 #how far can a new ball have to be before the program loggs it as another ball?
 
 #code and math
 NetworkTables.initialize(server=10.17.21.2)
+NetworkTables.setServer([("10.17.21.2", 5800), ])
 table = NetworkTables.getTable("ML")
 ros = NetworkTables.getTable("ROS")
 i = 0
