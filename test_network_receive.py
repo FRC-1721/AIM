@@ -1,19 +1,21 @@
-#imports and initilizing, do not edit
 import sys
 import time
 from networktables import NetworkTables
 
 import logging	# Required
 logging.basicConfig(level=logging.DEBUG)
- #variables to tweak
-smoothLevel = 10000 #how long to store a balls locaion?
-memRange = 10 #how far can a new ball have to be before the program loggs it as another ball?
 
-#code and math
-NetworkTables.initialize(server="10.17.21.2")
-#NetworkTables.setServer([("10.17.21.2", 5800), ])
+if len(sys.argv) != 2:
+    print("Error: specify an IP to connect to!")
+    exit(0)
+
+ip = sys.argv[1]
+
+smoothLevel = 10000
+memRange = 10
+
+NetworkTables.initialize(server=ip)
 table = NetworkTables.getTable("ML")
-ros = NetworkTables.getTable("ROS")
 i = 0
 p = 0
 ball1memX = 0
@@ -81,7 +83,7 @@ while 1:
     elif (numBall <= 1):
         if (i <= smoothLevel - 1):
             print("The center of ball 1 is at " + str(ball1memX))
-        if (p <= smoothLevel - 1):              
+        if (p <= smoothLevel - 1):
             print("The center of ball 2 is at " + str(ball2memX))
         if (p >= smoothLevel or i >= smoothLevel):
             notEnoughBallage = True
@@ -90,21 +92,5 @@ while 1:
     #print(ball1memX)
     p = p + 1
     i = i + 1
-    
-    ros.putNumber("ball1centerX", ball1memX)
-    ros.putNumber("ball2centerX", ball2memX)
-    leftSpeed = 0
-    rightSpeed = 0
-    if (ball1centerX >=25 and ball1centerX <= 35):
-        pass
-    elif(ball1centerX < 25):
-        leftSpeed = 0.2
-    elif(ball1centerX > 35):
-        rightSpeed = 0.2
-    
-        
-    
-    ros.putNumber("coprocessorPort", leftSpeed)
-    ros.putNumber("coprocessorStarboard", rightSpeed)
-    
-    
+    table.putNumber("ball1centerX", ball1memX)
+    table.putNumber("ball2centerX", ball2memX)
